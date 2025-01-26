@@ -7,8 +7,8 @@ def get_clear_sity_list(file_path):
 
 def reborn_queries(file_path, sity_list=''):
     with open(file_path, 'r', encoding='utf-8') as f:
-        qwe = csv.reader(f, quotechar='|')
-        or_list = list(qwe)[1:]
+        temp_list = csv.reader(f, quotechar='|')
+        or_list = list(temp_list)[1:]
         ORIG_LIST:str = ''
         
         for row_list in or_list[:35]:
@@ -28,8 +28,8 @@ def reborn_queries(file_path, sity_list=''):
         
 if __name__ == '__main__':
     
-    sity_path = 'C:/Users/Val/Desktop/Обучалки_и_писульки/Писульки/города_россии.txt'
-    reborneted_file_path = 'C:/Users/Val/Desktop/Promo/запросы и скрипты/wordstat_top_queries_ORDER_STATUS.csv'
+    sity_path = 'какой-то/путь/города_россии.txt'
+    reborneted_file_path = 'какой-то/путь/wordstat_top_queries_ORDER_STATUS.csv'
     
     sity_list = get_clear_sity_list(sity_path)
     reborn_queries(reborneted_file_path, sity_list)
