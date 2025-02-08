@@ -1,35 +1,37 @@
 import csv
 
-def get_clear_sity_list(file_path):
+def get_clear_bad_words_list(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         return [sity_name.split('\n')[0] for sity_name in file.readlines() if sity_name != '\n']
     
 
-def reborn_queries(file_path, sity_list=''):
+def reborn_queries(file_path, file_extension='txt', length_limit=-1, bad_words_list=''):
+    clear_bad_words_list = get_clear_bad_words_list(bad_words_list)
+
     with open(file_path, 'r', encoding='utf-8') as f:
-        temp_list = csv.reader(f, quotechar='|')
-        or_list = list(temp_list)[1:]
-        ORIG_LIST:str = ''
+        tag_list = csv.reader(f, quotechar='|')
+        modify_tag_list = list(tag_list)[1:]
+        FINAL_LIST :str = ''
         
-        for row_list in or_list[:35]:
+        for row_list in modify_tag_list[:length_limit]:
             final_value = row_list[0].split(';')[0]
-            if sity_list:
-                if [sity for sity in sity_list if sity.lower() in final_value]:
+            if clear_bad_words_list:
+                if [sity for sity in clear_bad_words_list if sity.lower() in final_value]:
                     continue
-                ORIG_LIST += final_value + ', '
+                FINAL_LIST += final_value + ', '
             else:
-                ORIG_LIST += final_value + ', '
-        print('Длина списка - ', len(ORIG_LIST))
+                FINAL_LIST += final_value + ', '
+        print('Длина списка в символах - ', len(FINAL_LIST))
         
-        with open(f'{file_path.split('.')[0]}_ref.txt', 'w', encoding='utf-8') as file:
-            file.write(ORIG_LIST)
+        with open(f'{file_path.split('.')[0]}_ref.{file_extension}', 'w', encoding='utf-8') as file:
+            file.write(FINAL_LIST)
             print('--- writing is done! ---')
-            
-        
-if __name__ == '__main__':
+
+
+# if __name__ == '__main__':
     
-    sity_path = 'какой-то/путь/города_россии.txt'
-    reborneted_file_path = 'какой-то/путь/wordstat_top_queries_ORDER_STATUS.csv'
+#     bad_words_file = 'some_path/some_name_tag_file.file_extension'
+#     reborneted_file_path = 'some_path/wordstat_top_queries_ORDER_STATUS.csv'
     
-    sity_list = get_clear_sity_list(sity_path)
-    reborn_queries(reborneted_file_path, sity_list)
+#     bad_words_list = get_clear_bad_words_list(bad_words_file)
+#     reborn_queries(reborneted_file_path, bad_words_list)
